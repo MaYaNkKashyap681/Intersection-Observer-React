@@ -18,7 +18,7 @@ const Posts = () => {
                 setTimeout(() => {
                     setIsVisible(false)
                     setPostCount((prev) => prev + 5);
-                }, 1000);
+                }, 500);
             } else {
 
             }
@@ -32,11 +32,11 @@ const Posts = () => {
         }
     }, [])
     return (
-        <div className='mt-[2rem] w-[40%] mx-auto '>
-            <div className='flex flex-col gap-8'>
+        <div className='w-full mx-auto '>
+            <div className='flex flex-col gap-2'>
                 {
                     new Array(postCount).fill(0).map((_, index) => (
-                        <Post key={index} />
+                        <Post key={index} index = {index + 1}/>
                     ))
                 }
             </div>
