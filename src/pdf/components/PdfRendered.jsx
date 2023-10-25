@@ -5,6 +5,7 @@ import 'react-pdf/dist/Page/TextLayer.css';
 import pdfFile from '../../assets/ui-color-palette.pdf';
 import { useResizeDetector } from 'react-resize-detector';
 import Loader from './../components/Loader';
+import { AiOutlineZoomOut, AiOutlineZoomIn } from 'react-icons/ai'
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
@@ -18,12 +19,22 @@ const PdfRendered = () => {
 
     const { width, ref } = useResizeDetector();
 
+    const handleZoomOutClick = () => {
+        if (scale == 0.25) return;
+        setScale((prev) => prev - 0.25)
+    }
+
+    const handleZoomInClick = () => {
+        if (scale == 2) return;
+        setScale((prev) => prev + 0.25)
+    }
+
     return (
-        <div className='flex-1 w-full  mx-auto h-screen '>
+        <div className='relative flex-1 w-full  mx-auto h-screen '>
 
             <Document
                 loading={
-                    <div className='h-[5rem] w-full'>
+                    <div className='h-screen flex items-center justify-center w-full'>
                         <Loader />
                     </div>
                 }
@@ -37,7 +48,7 @@ const PdfRendered = () => {
                             <div
                                 key={index}
                                 onClick={() => setCurrPage(index + 1)}
-                                className={`w-[50%] bg-white p-1 relative my-4 min-h-[200px] mx-auto overflow-hidden rounded-md border-[3px]  cursor-pointer ${currPage === index + 1 ? 'border-blue-600' : ''
+                                className={`w-[50%] bg-white p-1 relative my-4 mx-auto overflow-hidden rounded-md border-[3px]  cursor-pointer ${currPage === index + 1 ? 'border-blue-600' : ''
                                     }`}
                             >
                                 <div className={`absolute z-[20] bg-blue-600 rounded-br-lg top-0 left-0 p-4 text-white font-bold ${currPage === index + 1 ? '' : 'hidden'}`}>{index + 1}</div>
@@ -63,17 +74,22 @@ const PdfRendered = () => {
                                 scale={scale}
                                 rotate={rotation}
                                 loading={
-                                    <div className='h-[5rem] w-full'>
+                                    <div className='h-screen flex items-center justify-center w-full'>
                                         <Loader />
                                     </div>
                                 }
                                 onRenderSuccess={() => setRenderedScale(scale)}
+                                className='mx-auto'
                             />
                         ))}
                     </div>
                 </div>
             </Document>
-
+            <div className='w-[32rem] flex items-center p-4 rounded-lg gap-4 bg-gray-900 bg-clip-padding backdrop-filter backdrop-blur-xl bg-opacity-60 border border-gray-100 absolute z-[20] bottom-4 left-1/2 -translate-x-1/2'>
+                <div className='cursor-pointer'><AiOutlineZoomOut className={`${scale === 0.25 ? 'text-gray-500' : 'text-white'} text-3xl`} onClick={handleZoomOutClick} /></div>
+                <span className='text-white font-bold'>{scale * 100}%</span>
+                <div className='cursor-pointer'><AiOutlineZoomIn className={`${scale === 0.25 ? 'text-gray-50' : 'text-white'} text-3xl`} onClick={handleZoomInClick} /></div>
+            </div>
         </div>
     );
 };
