@@ -13,7 +13,6 @@ const postsList = [
     "https://images.unsplash.com/photo-1696862231970-c01a8bbe1033?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyOXx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=60",
     "https://images.unsplash.com/photo-1696864786774-77e691241e76?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzNHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=60",
     "https://images.unsplash.com/photo-1696543710864-fecad4bfbf62?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw5NHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=60"
-
 ]
 
 
