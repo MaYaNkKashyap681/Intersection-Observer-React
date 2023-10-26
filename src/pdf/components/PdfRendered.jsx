@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Document, Page, Thumbnail, pdfjs } from 'react-pdf';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 import pdfFile from '../../assets/ui-color-palette.pdf';
 import { useResizeDetector } from 'react-resize-detector';
 import Loader from './../components/Loader';
-import { AiOutlineZoomOut, AiOutlineZoomIn } from 'react-icons/ai'
+import { AiOutlineZoomOut, AiOutlineZoomIn, AiOutlineFullscreenExit, AiOutlineFullscreen } from 'react-icons/ai'
+import PdfFullScreen from './PdfFullScreen';
+
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
@@ -16,6 +18,7 @@ const PdfRendered = () => {
     const [rotation, setRotation] = useState(0);
     const [renderedScale, setRenderedScale] = useState(null);
     const isLoading = renderedScale !== scale;
+    const [isOpen, setIsOpen] = useState(false);
 
     const { width, ref } = useResizeDetector();
 
@@ -28,6 +31,27 @@ const PdfRendered = () => {
         if (scale == 2) return;
         setScale((prev) => prev + 0.25)
     }
+
+    const handleFullScreenClick = () => {
+        setIsOpen((prev) => !prev)
+    }
+
+
+    const keyPressFunction = (e) => {
+        if (e.key === 'Escape' || e.key === 'Esc' || e.keyCode === 27) {
+            setIsOpen(false)
+        } else if (e.key === 'f' || e.key === 'F') {
+            setIsOpen(true)
+        }
+    }
+
+
+    useEffect((e) => {
+        window.addEventListener('keydown', keyPressFunction)
+        return () => {
+            window.addEventListener('keydown', keyPressFunction)
+        }
+    }, [])
 
     return (
         <div className='relative flex-1 w-full  mx-auto h-screen '>
@@ -78,6 +102,7 @@ const PdfRendered = () => {
                                         <Loader />
                                     </div>
                                 }
+                                key={index}
                                 onRenderSuccess={() => setRenderedScale(scale)}
                                 className='mx-auto'
                             />
@@ -85,11 +110,23 @@ const PdfRendered = () => {
                     </div>
                 </div>
             </Document>
-            <div className='w-[32rem] flex items-center p-4 rounded-lg gap-4 bg-gray-900 bg-clip-padding backdrop-filter backdrop-blur-xl bg-opacity-60 border border-gray-100 absolute z-[20] bottom-4 left-1/2 -translate-x-1/2'>
+
+            {
+                isOpen && <PdfFullScreen PDFurl={pdfFile} />
+            }
+            <div className=' w-[32rem] flex items-center p-4 rounded-lg gap-4 bg-gray-900 bg-clip-padding backdrop-filter backdrop-blur-xl bg-opacity-60 border border-gray-100 fixed z-[40] bottom-4 left-1/2 -translate-x-1/2'>
                 <div className='cursor-pointer'><AiOutlineZoomOut className={`${scale === 0.25 ? 'text-gray-500' : 'text-white'} text-3xl`} onClick={handleZoomOutClick} /></div>
                 <span className='text-white font-bold'>{scale * 100}%</span>
                 <div className='cursor-pointer'><AiOutlineZoomIn className={`${scale === 0.25 ? 'text-gray-50' : 'text-white'} text-3xl`} onClick={handleZoomInClick} /></div>
+                <div className='cursor-pointer' onClick={handleFullScreenClick}>
+                    {isOpen ? (
+                        <AiOutlineFullscreenExit className="text-white text-3xl" />
+                    ) : (
+                        <AiOutlineFullscreen className="text-white text-3xl" />
+                    )}
+                </div>
             </div>
+
         </div>
     );
 };
