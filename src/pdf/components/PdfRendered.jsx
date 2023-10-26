@@ -7,6 +7,7 @@ import { useResizeDetector } from 'react-resize-detector';
 import Loader from './../components/Loader';
 import { AiOutlineZoomOut, AiOutlineZoomIn, AiOutlineFullscreenExit, AiOutlineFullscreen } from 'react-icons/ai'
 import PdfFullScreen from './PdfFullScreen';
+import KeySuggestion from './KeySuggestion';
 
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
@@ -114,17 +115,19 @@ const PdfRendered = () => {
             {
                 isOpen && <PdfFullScreen PDFurl={pdfFile} />
             }
-            <div className=' w-[32rem] flex items-center p-4 rounded-lg gap-4 bg-gray-900 bg-clip-padding backdrop-filter backdrop-blur-xl bg-opacity-60 border border-gray-100 fixed z-[40] bottom-4 left-1/2 -translate-x-1/2'>
+            <div className=' w-[32rem] flex items-center p-2 rounded-3xl gap-4 bg-gray-900 bg-clip-padding backdrop-filter backdrop-blur-xl bg-opacity-60 border border-gray-100 fixed z-[40] bottom-4 left-1/2 -translate-x-1/2'>
                 <div className='cursor-pointer'><AiOutlineZoomOut className={`${scale === 0.25 ? 'text-gray-500' : 'text-white'} text-3xl`} onClick={handleZoomOutClick} /></div>
                 <span className='text-white font-bold'>{scale * 100}%</span>
                 <div className='cursor-pointer'><AiOutlineZoomIn className={`${scale === 0.25 ? 'text-gray-50' : 'text-white'} text-3xl`} onClick={handleZoomInClick} /></div>
-                <div className='cursor-pointer' onClick={handleFullScreenClick}>
-                    {isOpen ? (
-                        <AiOutlineFullscreenExit className="text-white text-3xl" />
-                    ) : (
-                        <AiOutlineFullscreen className="text-white text-3xl" />
-                    )}
-                </div>
+                <KeySuggestion text={isOpen ? 'Min: Esc' : 'Full: F'}>
+                    <div className='cursor-pointer' onClick={handleFullScreenClick}>
+                        {isOpen ? (
+                            <AiOutlineFullscreenExit className="text-white text-3xl" />
+                        ) : (
+                            <AiOutlineFullscreen className="text-white text-3xl" />
+                        )}
+                    </div>
+                </KeySuggestion>
             </div>
 
         </div>
