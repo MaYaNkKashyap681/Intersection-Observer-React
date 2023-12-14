@@ -35,3 +35,7 @@ body {
         transform: rotate(360deg);
     }
 }
+
+.mousePointer {
+    cursor: url(./assets/pensvg.svg), 16 0, auto;
+}
